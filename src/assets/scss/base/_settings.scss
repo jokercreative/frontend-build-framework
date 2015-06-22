@@ -1,0 +1,88 @@
+/*   
+  	==========
+
+  	Settings Table of Contents
+
+  	==========
+
+  	1. Font Weights
+  	2. Base Font Styles  	
+	3. Theme Font Families
+	4. Font Sizes
+	5. Sprite
+	6. Shades
+	7. Colors
+	8. Component Based Colors
+
+*/
+
+
+/* 1. Font Weights
+================================================== */
+$font_weight--light: 	100;
+$font_weight--regular: 	400;
+$font_weight--bold: 	600;
+
+
+/* 2. Base Font Styles
+================================================== */
+$base_font-family: 	Arial, sans-serif !default;
+$base_font-weight: 	$font_weight--regular;
+$base_font-size: 	10px;
+$base_line-height: 	1.4;
+
+
+/* 3. Theme Font Families
+================================================== */
+@include font-face(tarzana-narrow-bold, '../fonts/tarzana-narrow-bold/tarzana-narrow-bold');
+$TarzanaNarrow-Bold-font-family: 'tarzana-narrow-bold', $base_font-family;
+
+
+/* 4. Font Sizes
+================================================== */
+$font_size-01: 				50px;
+
+
+/* 5. Sprite
+================================================== */
+$sprite_grid: 				40px;
+$sprite_location: 			"../images/sprite.png";
+$sprite_location--retina: 	"";
+$sprite_width--retina: 		2040px;
+
+
+/* 6. Shades
+================================================== */
+$color_white: 				#fff;
+$color_black: 				#000;
+
+
+/* 7. Colors - Default Variables
+================================================== */
+$color_primary: 			#C69;
+$color_secondary: 			#699;
+$color_tertiary: 			#F2ECE4;
+
+
+/* 8. Component Based Themeing
+================================================== */
+
+/* --[ BORDERS ]-- */
+$border_radius:				5px;
+
+
+/* --[ BUTTONS ]-- */
+$button_font-family: 		$base_font-family;
+$button_font-size: 			$base_font-size;
+$button_text-transform:		uppercase;
+
+$button_font-color: 		#00755c;
+$button_font-color--hover: 	#00755c;
+
+$button_color--hover: 		#00755c;
+
+$button_border-radius: 		0px;
+
+$button_padding: 			10px;
+
+

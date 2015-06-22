@@ -1,0 +1,83 @@
+/*   
+  	==========
+
+  	Transition Table of Contents
+
+  	==========
+
+  	1. Transition 
+  	2. Transition Property
+  	3. Transition Duration
+  	4. Transition Timing Function
+  	5. Transition Delay
+  	6. Animation
+	  7. Keyframes
+*/
+
+
+/* 1. Transition
+================================================== */
+@mixin transition($values...) { 
+    $transitions: ();
+    @each $declaration in $values {
+        $prop: nth($declaration, 1);
+        $prop-opts: ();
+        $length: length($declaration);
+        @for $i from 2 through $length {
+            $prop-opts: append($prop-opts, nth($declaration, $i));   
+        }
+        $trans: ($prop, $prop-opts);
+        $transitions: append($transitions, $trans, comma);
+    }
+      
+    -webkit-transition: trans-prefix($transitions, webkit);
+    -moz-transition: trans-prefix($transitions, moz);
+    -o-transition: trans-prefix($transitions, o);
+    transition: $values;
+}
+
+
+/* 2. Transition Property
+================================================== */
+@mixin transition-property($property...) {
+	transition-property: $property;
+}
+
+
+/* 3. Transition Duration
+================================================== */
+@mixin transition-duration($duration...) {
+	transition-duration: $duration;
+}
+
+
+/* 4. Transition Timing Function
+================================================== */
+@mixin transition-timing-function($timing...) {
+	transition-timing-function: $timing;
+}
+
+
+/* 5. Transition Delay
+================================================== */
+@mixin transition-delay($delay...) {
+	transition-delay: $delay;
+}
+
+
+/* 6. Animation
+================================================== */
+@mixin animation($value) {
+	animation: $value;
+}
+
+
+/* 7. Keyframes
+================================================== */
+@mixin keyframes($name) {
+	@keyframes $name { @content; }
+}
+
+
+
+

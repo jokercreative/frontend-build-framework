@@ -1,0 +1,63 @@
+/*   
+  	==========
+
+  	Sprite Table of Contents
+
+  	==========
+
+  	1. Basic Sprite Item
+  	2. Inline Sprite Item
+	3. Text Sprite Replacement
+	4. Retina Sprite replacement
+	5. Sprite Position
+	
+*/
+
+
+/* 1. Basic Sprite Item
+================================================== */
+@mixin sprite($xpos, $ypos, $location: $sprite_location, $grid: $sprite_grid){
+	background: {
+		image: url($location);
+		repeat: no-repeat;
+   		position: (-($xpos*$grid)) (-($ypos*$grid));
+   	}
+}
+
+
+/* 2. Inline Sprite Item
+================================================== */
+@mixin sprite-inline($xpos, $ypos, $width: null, $height: null, $location: $sprite_location, $grid: $sprite_grid){
+	@include sprite($xpos, $ypos, $location, $grid);	
+  	@extend .inline-block;
+	content: "";
+	@if $width != null 	{ width: $width+px; }
+	@if $height != null { height: $height+px; }
+}
+
+
+/* 3. Text Sprite Replacement
+================================================== */
+@mixin sprite-replace ($xpos, $ypos, $width: null, $height: null, $location: $sprite_location, $grid: $sprite_grid) {
+   	@include sprite($xpos, $ypos, $location, $grid);	
+   	@if $width != null 	{ width: $width+px; }
+	@if $height != null { height: $height+px; }
+   	@extend .hide-text;
+}
+
+
+/* 4 Retina Sprite replacement
+================================================== */
+@mixin retina-sprite($icon-size, $original-size, $location: $sprite_location--retina, $width: $sprite_width--retina){
+	background: {
+		image: url($location);
+		size:($width/($icon-size/$original-size)) auto;
+	}
+}
+
+
+/* 5. Sprite Position
+================================================== */
+@mixin sprite-position($xpos, $ypos){
+	background-position: (-($xpos*$sprite_grid)) (-($ypos*$sprite_grid));
+}

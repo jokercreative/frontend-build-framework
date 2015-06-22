@@ -1,0 +1,27 @@
+@mixin button() {
+	@extend %inline-block;
+	@include box-sizing();
+
+	padding: $button_padding;
+
+	color: $button_font-color;
+	@include font-size($button_font-size);		
+	text-align: center;
+	font-family: $button_font-family; 
+	font-weight: normal; 
+	text-decoration: none;
+	text-transform: $button_text-transform;	
+
+	border: 0;
+	@include border-radius($button_border-radius);
+	
+	@extend %no-box-shadow;
+
+	@include transition(background, 200ms, ease-out);
+	@include transition(box-shadow, 200ms, ease-out);
+
+	&:hover {
+		color: $button_font-color--hover;
+	}
+
+}

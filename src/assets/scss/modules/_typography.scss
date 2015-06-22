@@ -1,0 +1,109 @@
+/*   
+  ==========
+
+  Typography Table of Contents
+
+  ==========
+
+  1. Font Face import
+  2. Font Size - PX & REM 
+  3. Line height
+  4. Letter Spacing
+  5. Text Shadow
+  6. Text Truncate
+  7. Disable text selection
+  8. Placeholder
+  
+*/
+
+/* 1. Font Face Import
+================================================== */
+@mixin font-face($family, $src, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: $family;
+    src: url('#{$src}.eot'); // IE9 compat
+    src: url('#{$src}.eot?#iefix') format('embedded-opentype'), // IE8 and below
+      url('#{$src}.woff2') format('woff2'),
+      url('#{$src}.woff') format('woff'), // standards
+      url('#{$src}.ttf') format('truetype');
+    font-style: $style;
+    font-weight: $weight;
+  }
+}
+
+
+/* 2. Font Size - PX & REM 
+================================================== */
+@mixin font-size($size, $base-size: $base_font-size){
+  font-size: 0px + $size;
+  font-size: 0rem + ($size / $base-size);
+}
+
+
+/* 3. Line height
+================================================== */
+// new method => https://gist.github.com/bivald/9408059
+@mixin line-height($fontsize, $lineheight ){ 
+ 
+    line-height: ($lineheight) + px;
+    line-height: ($lineheight/10) + rem;
+ 
+    margin-top: (($lineheight - $fontsize)/2 * -1) + px;
+    margin-top: ((($lineheight - $fontsize)/2 * -1) / 10 ) + rem
+}
+
+// Old Method
+/* @mixin line-height($size, $base-size: $base_font-size){
+  line-height: 0px + $size;
+  line-height: 0rem + ($size / $base-size);
+} */
+
+
+/* 4. Letter Spacing
+================================================== */
+@mixin letter-spacing($letterspacing) {
+  letter-spacing: $letterspacing/1000;
+}
+
+
+/* 5. Text Shadow
+================================================== */
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+@mixin text-shadow($horizontal, $vertical, $blur, $colour) {
+	text-shadow: $horizontal $vertical $blur $colour;
+	filter: dropshadow(color=$colour, offx=strip-unit($horizontal), offy=strip-unit($vertical));
+}
+
+
+/* 6. Text Truncate
+================================================== */
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-truncate { @include text-truncate; }
+
+
+/* 7. Disable text selection
+================================================== */
+@mixin non-user-selectable {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+.non-selectable { @include non-user-selectable; }
+
+
+/* 8. Placeholder
+================================================== */
+@mixin placeholder {
+  ::-webkit-input-placeholder { @content; }
+       :-ms-input-placeholder { @content; }
+           ::-moz-placeholder { @content; }
+            :-moz-placeholder { @content; }       
+}

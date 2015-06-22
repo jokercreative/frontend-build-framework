@@ -1,0 +1,105 @@
+/*   
+  	==========
+
+  	Main Style - Table of Contents
+
+  	==========
+
+  	1. Importing Base Modules & Normalize
+    2. Settings Files 	
+	  3. Importing Other Modules
+	  4. Component files
+	  5. Third Party Files
+	  6. Base Styles
+    7. Component files
+
+*/
+
+
+/* 1. Importing Base Modules & Normalize
+================================================== */
+@import "vendor/_normalize";
+@import "modules/_prefix";
+@import "modules/_typography";
+
+
+/* 2. Settings Files
+================================================== */
+@import "base/_settings";
+
+
+/* 3. Importing Other Modules
+================================================== */
+@import "modules/_visibility";
+@import "modules/_transitions";
+@import "modules/_transform";
+@import "modules/_background";
+@import "modules/_borders";
+@import "modules/_layout";
+@import "modules/_sprite";
+@import "modules/_responsive";
+
+
+/* 4. Partials Files
+================================================== */
+@import "partials/_buttons";
+
+
+/* 5. Third Party Files
+================================================== */
+
+
+
+/* 6. Base Styles
+================================================== */
+
+* {
+  @include box-sizing;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-size: $base_font-size;
+  height: 100%;
+}
+
+body {
+  font-size: 10px;
+}
+
+// Chrome font render issue fix
+body > div { @include font-size($base_font-size) }
+
+h1 {
+
+}
+
+h2 {
+
+}
+
+h3 {
+
+}
+
+h4 {
+
+}
+
+p {
+
+}
+
+a {
+
+}
+
+
+/* 7. Component files
+================================================== */
+@import "components/_header";
+@import "components/_footer";
+
+
+

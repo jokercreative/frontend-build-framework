@@ -1,0 +1,80 @@
+/*   
+  ==========
+
+  Border Table of Contents
+
+  ==========
+
+  1. Border Radius 
+  2. Border - Top Radius
+  3. Border - Bottom Radius
+  4. Border - RHS Radius
+  5. Border - LHS Radius
+  6. Double Border
+  7. Triple Border
+
+*/
+
+
+
+/* 1. Border Radius
+================================================== */
+@mixin border-radius($value: $border_radius) {  
+  border-radius: $value;
+}
+
+
+/* 2. Border - Top Radius
+================================================== */
+@mixin border-top-radius($radius) {
+  border-top-right-radius: $radius;
+   border-top-left-radius: $radius;
+          background-clip: padding-box;
+}
+
+
+/* 3. Border - Bottom Radius
+================================================== */
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+   border-bottom-left-radius: $radius;
+             background-clip: padding-box;
+}
+
+
+/* 4. Border - RHS Radius
+================================================== */
+@mixin border-right-radius($radius) {
+  border-bottom-right-radius: $radius;
+     border-top-right-radius: $radius;
+             background-clip: padding-box;
+}
+
+
+/* 5. Border - LHS Radius
+================================================== */
+@mixin border-left-radius($radius) {
+  border-bottom-left-radius: $radius;
+     border-top-left-radius: $radius;
+            background-clip: padding-box;
+}
+
+
+/* 6. Double Border
+================================================== */
+@mixin double-borders($colorOne: #3C3C3C, $colorTwo: #999999, $radius: 0) {
+  border: 1px solid $colorOne;
+  @include box-shadow(0 0 0 1px $colorTwo);
+  @include border-radius( $radius );
+}
+
+
+/* 7. Triple Border
+================================================== */
+@mixin triple-borders($colorOne: #3C3C3C, $colorTwo: #999999, $colorThree: #000000, $radius: 0) {
+    border: 1px solid $colorOne;
+    @include border-radius($radius);
+    @include box-shadow(0 0 0 1px $colorTwo, 0 0 0 2px $colorThree);
+}
+
+

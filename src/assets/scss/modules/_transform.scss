@@ -1,0 +1,95 @@
+/*   
+	==========
+
+	Transforms Table of Contents
+
+	==========
+
+	1. Transform
+	2. Transform Origin
+	3. Rotate
+	4. Scale
+	5. Translate
+	6. Skew
+	7. Flip
+	8. Resize
+	9. Filter
+*/
+
+
+
+/* 1. Transform
+================================================== */
+@mixin transform($value) {
+	transform: $value;
+}
+
+
+/* 2. Transform Origin
+================================================== */
+@mixin transform-origin ($origin) {
+	transform-origin: $origin;
+}
+
+
+/* 3. Rotate
+================================================== */
+@mixin rotate ($deg: 0, $m11: 0, $m12: 0, $m21: 0, $m22: 0) {
+  @include transform(rotate(#{$deg}deg));
+  filter: progid:DXImageTransform.Microsoft.Matrix(
+       M11=#{$m11}, M12=#{$m12}, M21=#{$m21}, M22=#{$m22}, sizingMethod='auto expand');
+    zoom: 1;
+}
+
+
+/* 4. Scale
+================================================== */
+@mixin scale($scale) {
+	 @include transform(scale($scale));
+} 
+
+
+/* 5. Translate
+================================================== */
+@mixin translate ($x, $y) {
+   @include transform(translate($x, $y));
+}
+
+
+/* 6. Skew
+================================================== */
+@mixin skew ($x, $y) {
+   @include transform(skew(#{$x}deg, #{$y}deg));
+}
+
+
+/* 7. Flip
+================================================== */
+@mixin flip($scaleX: -1) {
+  @include transform(scaleX($scaleX));
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
+
+/* 8. Resize
+================================================== */
+@mixin resize($direction: both) {
+  resize: $direction;
+}
+
+
+/* 9. Filter
+================================================== */
+// grayscale      ex: filter: grayscale(100%);
+// sepia          ex: filter: sepia(100%);
+// saturate       ex: filter: saturate(0%);
+// hue-rotate     ex: filter: hue-rotate(45deg);
+// invert         ex: filter: invert(100%);
+// brightness     ex: filter: brightness(15%);
+// contrast       ex: filter: contrast(200%);
+// blur           ex: filter: blur(2px);
+@mixin filter($filters) {
+  filter: $filters;
+}
+

@@ -1,0 +1,65 @@
+/*   
+    ==========
+
+    Reponsive Table of Contents
+
+    ==========
+
+    1. Width based Media Queries
+    2. Height based Media Queries
+    3. Retina Media Queries
+
+*/
+
+
+/* 1. Width based Media Queries
+================================================== */
+@mixin responsive-width($query) {
+  @media screen and #{$query} { @content; }
+}
+
+@mixin responsive-width-from($width-from) {
+  @media screen and (min-width: $width-from + 1) { @content; }
+}
+
+@mixin responsive-width-to($width-to) {
+  @media screen and (max-width: #{$width-to}) { @content; }
+}
+
+@mixin responsive-width-from-to($width-from,$width-to) {
+  @media screen and (min-width: $width-from + 1) and (max-width: #{$width-to}) { @content; }
+}
+
+
+/* 2. Height based Media Queries
+================================================== */
+@mixin responsive-height($query) {
+  @media screen and #{$query} { @content; }
+}
+
+@mixin responsive-height-from($height-from) {
+  @media screen and (min-height: $height-from) { @content; }
+}
+
+@mixin responsive-height-to($height-to) {
+  @media screen and (max-height: #{$height-to}) { @content; }
+}
+
+@mixin responsive-height-from-to($height-from,$height-to) {
+  @media screen and (min-height: $height-from + 1) and (max-height: #{$height-to}) { @content; }
+} 
+
+
+/* 3. Retina Media Queries
+================================================== */
+@mixin retina-enabled {
+	@media
+	only screen and (-webkit-min-device-pixel-ratio: 2),
+	only screen and (   min--moz-device-pixel-ratio: 2),
+	only screen and (     -o-min-device-pixel-ratio: 2/1),
+	only screen and (        min-device-pixel-ratio: 2),
+	only screen and (                min-resolution: 192dpi),
+	only screen and (                min-resolution: 2dppx) { 
+		@content;
+	}
+}

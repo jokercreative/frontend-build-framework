@@ -1,0 +1,179 @@
+/*   
+  ==========
+
+  Background Table of Contents
+
+  ==========
+
+  1. Background cover
+  2. Box Shadow
+  3. Background Size
+  4. Background Gradient 
+  5. Background Gradient Radial
+  6. Background Opacity
+
+*/
+
+
+
+/* 1. Background Cover
+================================================== */
+@mixin background-cover { background-size: cover }
+
+
+/* 2. Box Shadow
+================================================== */
+@mixin box-shadow($args...) { box-shadow: $args }
+%remove-box-shadow { box-shadow: none }
+
+
+/* 3. Background Size
+================================================== */
+@mixin background-size($width: 100%, $height: $width) {
+  @if type-of($width) == 'number' and $height != null {
+    background-size: $width $height;
+  } @else {
+    background-size: $width;
+  }
+}
+
+
+/* 4. Background Gradient
+================================================== */
+@function convert-angle($value, $unit) {
+  $convertable-units: deg grad turn rad;
+  $conversion-factors: 1 (10grad/9deg) (1turn/360deg) (3.1415926rad/180deg);
+  @if index($convertable-units, unit($value)) and index($convertable-units, $unit) {
+    @return $value
+             / nth($conversion-factors, index($convertable-units, unit($value)))
+             * nth($conversion-factors, index($convertable-units, $unit));
+  }
+  
+  @warn "Cannot convert `#{unit($value)}` to `#{$unit}`.";
+}
+
+@function is-direction($value) {
+  $is-direction: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
+  $is-angle: type-of($value) == 'number' and index('deg' 'grad' 'turn' 'rad', unit($value));
+  
+  @return $is-direction or $is-angle;
+}
+
+@function legacy-direction($value) {
+  @if is-direction($value) == false {
+    @warn "Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be an angle or a direction";
+  }
+  
+  $conversion-map: ( 
+    to top          : bottom,
+    to top right    : bottom left,
+    to right top    : left bottom,
+    to right        : left,
+    to bottom right : top left,
+    to right bottom : left top,
+    to bottom       : top,
+    to bottom left  : top right,
+    to left bottom  : right top,
+    to left         : right,
+    to left top     : right bottom,
+    to top left     : bottom right
+  );
+    
+  @if map-has-key($conversion-map, $value) {
+    @return map-get($conversion-map, $value);
+  }
+  
+  @return 90deg - convert-angle($value, 'deg');
+}
+
+@mixin linear-gradient($direction, $color-stops...) {
+  @if is-direction($direction) == false {
+    $color-stops: ($direction, $color-stops);
+    $direction: 180deg;
+  }
+  
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
+
+
+/* 5. Background Gradient Radial
+================================================== */
+@mixin background-radial($startColor: #FFFFFF, $startPos: 0%, $endColor: #000000, $endPos:100%) {
+    background: -moz-radial-gradient(center, ellipse cover, $startColor $startPos, $endColor $endPos);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop($startPos,$startColor), color-stop($endPos,$endColor));
+    background: -webkit-radial-gradient(center, ellipse cover, $startColor $startPos,$endColor $endPos);
+    background: -o-radial-gradient(center, ellipse cover, $startColor $startPos,$endColor $endPos);
+    background: -ms-radial-gradient(center, ellipse cover, $startColor $startPos,$endColor $endPos);
+    background: radial-gradient(ellipse at center, $startColor $startPos,$endColor $endPos);
+}
+
+
+/* 6. Background Opacity
+================================================== */
+@mixin background-opacity($color: #000, $opacity: 0.85) {
+  background: $color;
+  background: rgba($color, $opacity);
+}
+
+
+
+
+
+/* #SVG
+================================================== */
+@mixin svg-bg($name, $extension: png, $color: transparent, $position: 0 0, $repeat: no-repeat) {
+  background: url(../images/#{$name}.#{$extension}) $color $position $repeat;
+  background: none, url(../images/#{$name}.svg) $color $position $repeat;
+}
+
+
+$image-path: '../img' !default;
+$fallback-extension: 'png' !default;
+$retina-suffix: '@2x';
+@mixin background-image($name, $size:false){
+    background-image: url(#{$image-path}/#{$name}.svg);
+    @if($size){
+        background-size: $size;
+    }
+    .no-svg &{
+        background-image: url(#{$image-path}/#{$name}.#{$fallback-extension});
+
+        @media only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+          background-image: url(#{$image-path}/#{$name}#{$retina-suffix}.#{$fallback-extension});
+        }
+    }
+}
+
+
+
+
+/* 4. Background Gradient Vertical
+================================================== */
+// @mixin background-gradient($top-colour, $top-colour-percentage, $bottom-color, $bottom-colour-percentage){
+//   background-color: $top-colour; 
+//   background-image: -ms-linear-gradient(top,  $top-colour $top-colour-percentage,$bottom-color $bottom-colour-percentage); 
+//   background-image: -webkit-gradient(linear, 0% $top-colour-percentage, 0% $bottom-colour-percentage, from($top-colour), to($bottom-color));
+//   background-image: linear-gradient(to bottom,  $top-colour $top-colour-percentage,$bottom-color $bottom-colour-percentage); 
+//   background-image: -webkit-linear-gradient($top-colour, $bottom-color); 
+//   background-image:    -moz-linear-gradient($top-colour, $bottom-color);    
+//   background-image:      -o-linear-gradient($top-colour, $bottom-color);
+//   filter:           progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$top-colour}', endColorStr='#{$bottom-color}');
+// }
+
+
+/* 5. Background Gradient Horizontal
+================================================== */
+// @mixin background-horizontal($left-colour, $left-colour-percentage, $right-color, $right-colour-percentage){
+//   background-color: $left-colour;   
+//   background-image: -webkit-gradient(linear, left top, right top, color-stop($left-colour-percentage,$left-colour), color-stop($right-colour-percentage,$right-color));
+//   background-image: -webkit-linear-gradient(left, $left-colour $left-colour-percentage, $right-color $right-colour-percentage); 
+//   background-image:    -moz-linear-gradient(left, $left-colour $left-colour-percentage, $right-color $right-colour-percentage); 
+//   background-image:      -o-linear-gradient(left, $left-colour $left-colour-percentage, $right-color $right-colour-percentage);
+//   background-image:     -ms-linear-gradient(left,  $left-colour $left-colour-percentage, $right-color $right-colour-percentage); 
+//   background-image: linear-gradient(to right,  $left-colour $left-colour-percentage, $right-color $right-colour-percentage);
+//   filter:           progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$startColor}', endColorStr='#{$endColor}', gradientType='1');
+// }
+
+
