@@ -75,20 +75,11 @@ module.exports = function (grunt) {
 		 * @github.com/gruntjs/grunt-contrib-sass
 		 */		
 		sass: {
-		    dev: {
+		    compile: {
 		    	options: {
 		    		style: "compressed",
 		    		//trace: true,
 		    		//debugInfo: true
-		    	},
-		        files: {
-		            "<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css" : "<%= globalConfig.src %>/<%= globalConfig.scss %>/styles.scss"
-		        }
-		    },
-
-		    dist: {
-		    	options: {
-		    		style: "compressed",
 		    	},
 		        files: {
 		            "<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css" : "<%= globalConfig.src %>/<%= globalConfig.scss %>/styles.scss"
@@ -247,7 +238,7 @@ module.exports = function (grunt) {
 			// Compile Sass dev on change
 			css: {
 				files: ["<%= globalConfig.src %>/<%= globalConfig.scss %>/*.scss", "<%= globalConfig.src %>/<%= globalConfig.scss %>/**/*.scss"],
-				tasks: ['sass:dev', 'autoprefixer', 'stripCssComments', 'cssbeautifier'],
+				tasks: ['sass:compile', 'autoprefixer', 'stripCssComments', 'cssbeautifier'],
 				options: {
 					spawn: false,
 				}
@@ -307,7 +298,7 @@ module.exports = function (grunt) {
 	*/
 	grunt.registerTask('default', [
 		'clean',
-		'sass:dev', 
+		'sass:compile', 
 		'autoprefixer',
 		'cssbeautifier',
 		'concat:js',
@@ -324,7 +315,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('production', [
 		'clean',
 		'processhtml',	
-		'sass:dist',
+		'sass:compile',
 		'autoprefixer',
 		'cssmin',
 		'concat:js',
