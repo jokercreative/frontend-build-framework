@@ -18,6 +18,24 @@ module.exports = function (grunt) {
 
 
     	/**
+		 * Shell Commands
+		 * @github.com/sindresorhus/grunt-shell
+		 */	
+    	shell: {
+		  bowerinstall: {
+		    command: function(libname){
+		      return 'bower install ' + libname + ' -S';
+		    }
+		  },
+		  bowerupdate: {
+		    command: function(libname){
+		      return 'bower update ' + libname;
+		    }
+		  }
+		},
+
+
+    	/**
 	     * Set banner
 	     */
 	    banner: '/**\n' +
@@ -147,6 +165,19 @@ module.exports = function (grunt) {
 		  },
 		},
 
+		/**
+		 * Concatenate Bower Files
+		 * @github.com/sapegin/grunt-bower-concat
+		 */	
+		bower_concat: {
+		  all: {
+		    dest: '<%= globalConfig.src %>/<%= globalConfig.js %>/bower.js',
+		    exclude: [
+		    	'decouple'
+		    ]
+		  }
+		},
+
 
 		/**
 		 * Concatenate
@@ -155,7 +186,8 @@ module.exports = function (grunt) {
 		concat: {
 		    js: {
 		        src: [
-		            '<%= globalConfig.src %>/<%= globalConfig.js %>/vendor/jquery-1.11.1.js',
+		            //'<%= globalConfig.src %>/<%= globalConfig.js %>/vendor/jquery-1.11.1.js',
+		            '<%= globalConfig.src %>/<%= globalConfig.js %>/bower.js',
 		            '<%= globalConfig.src %>/<%= globalConfig.js %>/vendor/*.js',
 		            '<%= globalConfig.src %>/<%= globalConfig.js %>/main.js'
 		        ],
@@ -205,11 +237,21 @@ module.exports = function (grunt) {
 		 * @github.com/gruntjs/grunt-contrib-copy
 		 */		
 		copy: {
-			main: {
+			fonts: {
 				files: [{
 					expand: true, 
+					flatten: true,
 					src: '<%= globalConfig.src %>/<%= globalConfig.fonts %>/*', 
 					dest: '<%= globalConfig.dist %>/<%= globalConfig.fonts %>/'
+					},
+				],
+			},
+			images: {
+				files: [{
+					expand: true, 
+					flatten: true,
+					src: '<%= globalConfig.src %>/<%= globalConfig.images %>/*', 
+					dest: '<%= globalConfig.dist %>/<%= globalConfig.images %>/'
 					},
 				],
 			},
@@ -256,8 +298,8 @@ module.exports = function (grunt) {
 
 
 		/**
-		* BrowserSync
-		* @github.com/BrowserSync/grunt-browser-sync
+		* browser_sync
+		* @github.com/browser_sync/grunt-browser-sync
 		*/		
 		browserSync : {
 			bsFiles : {
@@ -273,10 +315,10 @@ module.exports = function (grunt) {
 			      baseDir: '<%= globalConfig.dist %>'
 			    }				
 			}
-		},
+		}
     });
 
-	grunt.loadNpmTasks('grunt-processhtml');
+	/*grunt.loadNpmTasks('grunt-processhtml');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-autoprefixer');
@@ -289,7 +331,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-browser-sync');
+	grunt.loadNpmTasks('grunt-browser-sync');*/
+	require('load-grunt-tasks')(grunt);
 
 
 	/**
@@ -301,11 +344,31 @@ module.exports = function (grunt) {
 		'sass:compile', 
 		'autoprefixer',
 		'cssbeautifier',
+		'bower_concat',
 		'concat:js',
 		'processhtml',
+		'copy',
 		'browserSync',
 		'watch'
 	]);
+
+	grunt.registerTask('buildbower', [
+	  'bower_concat'
+	]);
+
+	/**
+	* grunt bowerinstall:jquery
+	* grunt bowerupdate:jquery
+	*/
+	grunt.registerTask('bowerinstall', function(library) {
+	  grunt.task.run('shell:bowerinstall:' + library);
+	  grunt.task.run('buildbower');
+	});
+	 
+	grunt.registerTask('bowerupdate', function(library) {
+	  grunt.task.run('shell:bowerupdate:' + library);
+	  grunt.task.run('buildbower');
+	});
 
 
 	/**
@@ -318,9 +381,10 @@ module.exports = function (grunt) {
 		'sass:compile',
 		'autoprefixer',
 		'cssmin',
+		'bower_concat',
 		'concat:js',
 		'uglify',	
-		'imagemin',
+		// 'imagemin',
 		'copy'
 	]);
 };

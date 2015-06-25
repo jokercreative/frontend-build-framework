@@ -1,0 +1,24 @@
+{
+  "name": "_project-template",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jokercreative/frontend-grunt-build-framework",
+  "description": "Frontend Automation Engine",
+  "moduleType": [
+    "node"
+  ],
+  "authors": [
+    "Jodie Walker"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "slideout.js": "mango/slideout#~0.1.9"
+  }
+}

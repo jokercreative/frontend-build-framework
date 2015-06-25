@@ -43,20 +43,20 @@
 /* 3. Line height
 ================================================== */
 // new method => https://gist.github.com/bivald/9408059
-@mixin line-height($fontsize, $lineheight ){ 
+// @mixin line-height($fontsize, $lineheight ){ 
  
-    line-height: ($lineheight) + px;
-    line-height: ($lineheight/10) + rem;
+//     line-height: ($lineheight) + px;
+//     line-height: ($lineheight/10) + rem;
  
-    margin-top: (($lineheight - $fontsize)/2 * -1) + px;
-    margin-top: ((($lineheight - $fontsize)/2 * -1) / 10 ) + rem
-}
+//     margin-top: (($lineheight - $fontsize)/2 * -1) + px;
+//     margin-top: ((($lineheight - $fontsize)/2 * -1) / 10 ) + rem
+// }
 
 // Old Method
-/* @mixin line-height($size, $base-size: $base_font-size){
+@mixin line-height($size, $base-size: $base_font-size){
   line-height: 0px + $size;
   line-height: 0rem + ($size / $base-size);
-} */
+}
 
 
 /* 4. Letter Spacing
