@@ -1,77 +1,20 @@
-/*   
+/*
   ==========
 
   Layout Table of Contents
 
   ==========
 
-  1. Clearfix
-  2. inline block
-  3. Center Items
-  4. Element Size
-  5. Positioning
-  6. Flexible Images
-  7. Box Sizing
-  8. Flex
-  9. Column Layouts
-  10. Inline list
+  Element Size
+  Positioning
+  Box Sizing
+  Flex
+  Column Layouts
+  Inline list
 
 */
 
-/* 1. Clearfix
-================================================== */
-%clearfix {
-  *zoom: 1;
-  &:before, &:after {
-    content: " ";
-    display: table;
-  }
-  &:after {
-    clear: both;
-  }
-}
-
-.clearfix { @extend %clearfix; }
-/* 
-  OLD STYLE:
-  %clearfix {
-    *zoom: 1;
-    &:after {
-        content:".";
-        display:block;
-        visibility:hidden;
-        height:0;
-        font-size:0;
-        clear:both;
-    }
-} */
-
-
-/* 2. inline block
-================================================== */
-%inline-block {
-  display: -moz-inline-stack;
-  display: inline-block;
-  vertical-align: top;
-  zoom: 1;
-  *display: inline;
-}
-
-.inline-block { @extend %inline-block; }
-
-
-/* 3. Center Items
-================================================== */
-%center-block {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.center-block { @extend %center-block; }
-
-
-/* 4. Element Size
+/* Element Size
 ================================================== */
 @mixin size($width, $height: $width) {
       width: $width;
@@ -79,29 +22,29 @@
 }
 
 
-/* 5. Positioning
+/* Positioning
 ================================================== */
 @mixin position($position, $args: ()) {
   $offsets: top right bottom left;
-  position: $position;                                               
-  
-  @each $offset in $offsets {                                        
-    $index: index($args, $offset);                                   
-    
-    @if $index {                                                     
-      @if $index == length($args) {                                  
-        #{$offset}: 0;                                               
+  position: $position;
+
+  @each $offset in $offsets {
+    $index: index($args, $offset);
+
+    @if $index {
+      @if $index == length($args) {
+        #{$offset}: 0;
       }
-      @else {                                                        
-        $next: nth($args, $index + 1);                              
-        @if is-valid-length($next) {                                
-          #{$offset}: $next;                                        
+      @else {
+        $next: nth($args, $index + 1);
+        @if is-valid-length($next) {
+          #{$offset}: $next;
         }
-        @else if index($offsets, $next) {                            
-          #{$offset}: 0;                                            
+        @else if index($offsets, $next) {
+          #{$offset}: 0;
         }
-        @else {                                                      
-          @warn "Invalid value `#{$next}` for offset `#{$offset}`."; 
+        @else {
+          @warn "Invalid value `#{$next}` for offset `#{$offset}`.";
         }
       }
     }
@@ -109,65 +52,40 @@
 }
 
 @function is-valid-length($value) {
-  @return (type-of($value) == "number" and not unitless($value)) 
+  @return (type-of($value) == "number" and not unitless($value))
        or (index(auto initial inherit 0, $value) != false);
 }
 
 @mixin absolute($args: ()) {
   @include position(absolute, $args);
 }
- 
+
 @mixin fixed($args: ()) {
   @include position(fixed, $args);
 }
- 
+
 @mixin relative($args: ()) {
   @include position(relative, $args);
 }
 
 
-/* 6. Flexible Images
-================================================== */
-%flexible-images {
-  height: auto;
-  width:  100%;
-}
-
-
-/* 7. Box Sizing
+/* Box Sizing
 ================================================== */
 @mixin box-sizing($box-model: border-box) {
   box-sizing: $box-model
 }
 
 
-/* 8. Flex
+/* Flex
 ================================================== */
 @mixin flex($value: 1) {
   box-flex: $value;
 }
 
 
-/* 9. Column Layouts
+/* Column Layouts
 ================================================== */
 @mixin columns($count: 3, $gap: 10) {
   column-count: $count;
   column-gap:   $gap;
-}
-
-
-/* 10. Inline list
-================================================== */
-%inline-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    
-    > li {        
-      float: left;
-      @extend .inline-block;
-      &:last-child { margin-right:0px; }        
-      a { @extend .inline-block; }        
-    }
 }

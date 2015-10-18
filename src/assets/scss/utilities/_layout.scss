@@ -1,0 +1,141 @@
+/*
+  ==========
+
+  Layout Table of Contents
+
+  ==========
+
+  Clearfix
+  Inline block
+  Center Items
+  Text Alignment
+  Spacing
+  Flexible Images
+  Box Sizing
+  Flex
+  Column Layouts
+  Inline list
+
+*/
+
+
+/* Clearfix
+================================================== */
+.clearfix,
+%clearfix {
+  *zoom: 1;
+  &:before, &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+
+/* Inline block
+================================================== */
+.inline-block,
+%inline-block {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+
+
+/* Center Items
+================================================== */
+.center-block,
+%center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* Text Alignment
+================================================== */
+.align-left,
+%align-left {
+  text-align: left;
+}
+
+.align-center,
+%align-center {
+  text-align: center;
+}
+
+.align-right,
+%align-right {
+  text-align: right;
+}
+
+.justify,
+%justify {
+  text-align: justify;
+}
+
+
+/* Spacing
+================================================== */
+.no-space,
+%no-space {
+  margin: 0;
+  padding: 0;
+}
+
+.space,
+%space {
+  margin: $spacing;
+}
+
+.space-top,
+%space-top {
+  margin-top: $spacing;
+}
+
+.space-right,
+%space-right {
+  margin-right: $spacing;
+}
+
+.space-btm,
+%space-btm {
+  margin-bottom: $spacing;
+}
+
+.space-left,
+%space-left {
+  margin-left: $spacing;
+}
+
+
+
+/* Flexible Images
+================================================== */
+.flexible-images,
+%flexible-images {
+  height: auto;
+  width:  100%;
+}
+
+
+/* Inline list
+================================================== */
+.inline-list,
+%inline-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+
+    > li {
+      float: left;
+      @extend .inline-block;
+      &:last-child { margin-right:0px; }
+      a { @extend .inline-block; }
+    }
+}

@@ -1,4 +1,4 @@
-/*   
+/*
   	==========
 
   	Main Style - Table of Contents
@@ -6,7 +6,7 @@
   	==========
 
   	1. Importing Base Modules & Normalize
-    2. Settings Files 	
+    2. Settings Files
 	  3. Importing Other Modules
 	  4. Component files
 	  5. Third Party Files
@@ -18,7 +18,6 @@
 
 /* 1. Importing Base Modules & Normalize
 ================================================== */
-@import "vendor/_normalize";
 @import "modules/_prefix";
 @import "modules/_typography";
 
@@ -30,6 +29,7 @@
 
 /* 3. Importing Other Modules
 ================================================== */
+@import "modules/_colors";
 @import "modules/_visibility";
 @import "modules/_transitions";
 @import "modules/_transform";
@@ -49,6 +49,11 @@
 ================================================== */
 
 
+/* Utilities
+================================================== */
+@import "utilities/_typography";
+@import "utilities/_background";
+@import "utilities/_layout";
 
 /* 6. Base Styles
 ================================================== */
@@ -66,10 +71,10 @@ html {
 
 body {
   font-size: 10px;
+
+  & > div { @include font-size($base_font-size) } // Chrome font render issue fix
 }
 
-// Chrome font render issue fix
-body > div { @include font-size($base_font-size) }
 
 h1 {
 

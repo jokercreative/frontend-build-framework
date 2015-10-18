@@ -1,22 +1,24 @@
-/*   
+/*
   ==========
 
   Typography Table of Contents
 
   ==========
 
-  1. Font Face import
-  2. Font Size - PX & REM 
-  3. Line height
-  4. Letter Spacing
-  5. Text Shadow
-  6. Text Truncate
-  7. Disable text selection
-  8. Placeholder
-  
+  Font Face import
+  Font Size - PX & REM
+  Line height
+  Letter Spacing
+  Text Shadow
+  Text Truncate
+  Disable text selection
+  Placeholder
+
 */
 
-/* 1. Font Face Import
+
+
+/* Font Face Import
 ================================================== */
 @mixin font-face($family, $src, $weight: normal, $style: normal) {
   @font-face {
@@ -32,7 +34,7 @@
 }
 
 
-/* 2. Font Size - PX & REM 
+/* Font Size - PX & REM
 ================================================== */
 @mixin font-size($size, $base-size: $base_font-size){
   font-size: 0px + $size;
@@ -40,14 +42,14 @@
 }
 
 
-/* 3. Line height
+/* Line height
 ================================================== */
 // new method => https://gist.github.com/bivald/9408059
-// @mixin line-height($fontsize, $lineheight ){ 
- 
+// @mixin line-height($fontsize, $lineheight ){
+
 //     line-height: ($lineheight) + px;
 //     line-height: ($lineheight/10) + rem;
- 
+
 //     margin-top: (($lineheight - $fontsize)/2 * -1) + px;
 //     margin-top: ((($lineheight - $fontsize)/2 * -1) / 10 ) + rem
 // }
@@ -59,14 +61,14 @@
 }
 
 
-/* 4. Letter Spacing
+/* Letter Spacing
 ================================================== */
 @mixin letter-spacing($letterspacing) {
   letter-spacing: $letterspacing/1000;
 }
 
 
-/* 5. Text Shadow
+/* Text Shadow
 ================================================== */
 @function strip-unit($num) {
   @return $num / ($num * 0 + 1);
@@ -78,7 +80,7 @@
 }
 
 
-/* 6. Text Truncate
+/* Text Truncate
 ================================================== */
 @mixin text-truncate {
   overflow: hidden;
@@ -86,10 +88,13 @@
   white-space: nowrap;
 }
 
-.text-truncate { @include text-truncate; }
+.text-truncate,
+%text-truncate {
+  @include text-truncate;
+}
 
 
-/* 7. Disable text selection
+/* Disable text selection
 ================================================== */
 @mixin non-user-selectable {
   -webkit-touch-callout: none;
@@ -99,11 +104,11 @@
 .non-selectable { @include non-user-selectable; }
 
 
-/* 8. Placeholder
+/* Placeholder
 ================================================== */
 @mixin placeholder {
   ::-webkit-input-placeholder { @content; }
        :-ms-input-placeholder { @content; }
            ::-moz-placeholder { @content; }
-            :-moz-placeholder { @content; }       
+            :-moz-placeholder { @content; }
 }

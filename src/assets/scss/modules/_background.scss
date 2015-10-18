@@ -1,33 +1,29 @@
-/*   
+/*
   ==========
 
   Background Table of Contents
 
   ==========
 
-  1. Background cover
-  2. Box Shadow
-  3. Background Size
-  4. Background Gradient 
-  5. Background Gradient Radial
-  6. Background Opacity
+  Box Shadow
+  Background Size
+  Background Gradient
+  Background Gradient Radial
+  Background Opacity
 
 */
 
-
-
-/* 1. Background Cover
-================================================== */
-%background-cover { background-size: cover }
-
-
-/* 2. Box Shadow
+/* Box Shadow
 ================================================== */
 @mixin box-shadow($args...) { box-shadow: $args }
-%remove-box-shadow { box-shadow: none }
+
+.remove-box-shadow,
+%remove-box-shadow {
+  box-shadow: none
+}
 
 
-/* 3. Background Size
+/* Background Size
 ================================================== */
 @mixin background-size($width: 100%, $height: $width) {
   @if type-of($width) == 'number' and $height != null {
@@ -38,7 +34,7 @@
 }
 
 
-/* 4. Background Gradient
+/* Background Gradient
 ================================================== */
 @function convert-angle($value, $unit) {
   $convertable-units: deg grad turn rad;
@@ -48,14 +44,14 @@
              / nth($conversion-factors, index($convertable-units, unit($value)))
              * nth($conversion-factors, index($convertable-units, $unit));
   }
-  
+
   @warn "Cannot convert `#{unit($value)}` to `#{$unit}`.";
 }
 
 @function is-direction($value) {
   $is-direction: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
   $is-angle: type-of($value) == 'number' and index('deg' 'grad' 'turn' 'rad', unit($value));
-  
+
   @return $is-direction or $is-angle;
 }
 
@@ -63,8 +59,8 @@
   @if is-direction($value) == false {
     @warn "Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be an angle or a direction";
   }
-  
-  $conversion-map: ( 
+
+  $conversion-map: (
     to top          : bottom,
     to top right    : bottom left,
     to right top    : left bottom,
@@ -78,11 +74,11 @@
     to left top     : right bottom,
     to top left     : bottom right
   );
-    
+
   @if map-has-key($conversion-map, $value) {
     @return map-get($conversion-map, $value);
   }
-  
+
   @return 90deg - convert-angle($value, 'deg');
 }
 
@@ -91,14 +87,14 @@
     $color-stops: ($direction, $color-stops);
     $direction: 180deg;
   }
-  
+
   background: nth(nth($color-stops, 1), 1);
   background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
   background: linear-gradient($direction, $color-stops);
 }
 
 
-/* 5. Background Gradient Radial
+/* Background Gradient Radial
 ================================================== */
 @mixin background-radial($startColor: #FFFFFF, $startPos: 0%, $endColor: #000000, $endPos:100%) {
     background: -moz-radial-gradient(center, ellipse cover, $startColor $startPos, $endColor $endPos);
@@ -110,16 +106,12 @@
 }
 
 
-/* 6. Background Opacity
+/* Background Opacity
 ================================================== */
 @mixin background-opacity($color: #000, $opacity: 0.85) {
   background: $color;
   background: rgba($color, $opacity);
 }
-
-
-
-
 
 /* #SVG
 ================================================== */
@@ -152,12 +144,12 @@ $retina-suffix: '@2x';
 /* 4. Background Gradient Vertical
 ================================================== */
 // @mixin background-gradient($top-colour, $top-colour-percentage, $bottom-color, $bottom-colour-percentage){
-//   background-color: $top-colour; 
-//   background-image: -ms-linear-gradient(top,  $top-colour $top-colour-percentage,$bottom-color $bottom-colour-percentage); 
+//   background-color: $top-colour;
+//   background-image: -ms-linear-gradient(top,  $top-colour $top-colour-percentage,$bottom-color $bottom-colour-percentage);
 //   background-image: -webkit-gradient(linear, 0% $top-colour-percentage, 0% $bottom-colour-percentage, from($top-colour), to($bottom-color));
-//   background-image: linear-gradient(to bottom,  $top-colour $top-colour-percentage,$bottom-color $bottom-colour-percentage); 
-//   background-image: -webkit-linear-gradient($top-colour, $bottom-color); 
-//   background-image:    -moz-linear-gradient($top-colour, $bottom-color);    
+//   background-image: linear-gradient(to bottom,  $top-colour $top-colour-percentage,$bottom-color $bottom-colour-percentage);
+//   background-image: -webkit-linear-gradient($top-colour, $bottom-color);
+//   background-image:    -moz-linear-gradient($top-colour, $bottom-color);
 //   background-image:      -o-linear-gradient($top-colour, $bottom-color);
 //   filter:           progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$top-colour}', endColorStr='#{$bottom-color}');
 // }
@@ -166,12 +158,12 @@ $retina-suffix: '@2x';
 /* 5. Background Gradient Horizontal
 ================================================== */
 // @mixin background-horizontal($left-colour, $left-colour-percentage, $right-color, $right-colour-percentage){
-//   background-color: $left-colour;   
+//   background-color: $left-colour;
 //   background-image: -webkit-gradient(linear, left top, right top, color-stop($left-colour-percentage,$left-colour), color-stop($right-colour-percentage,$right-color));
-//   background-image: -webkit-linear-gradient(left, $left-colour $left-colour-percentage, $right-color $right-colour-percentage); 
-//   background-image:    -moz-linear-gradient(left, $left-colour $left-colour-percentage, $right-color $right-colour-percentage); 
+//   background-image: -webkit-linear-gradient(left, $left-colour $left-colour-percentage, $right-color $right-colour-percentage);
+//   background-image:    -moz-linear-gradient(left, $left-colour $left-colour-percentage, $right-color $right-colour-percentage);
 //   background-image:      -o-linear-gradient(left, $left-colour $left-colour-percentage, $right-color $right-colour-percentage);
-//   background-image:     -ms-linear-gradient(left,  $left-colour $left-colour-percentage, $right-color $right-colour-percentage); 
+//   background-image:     -ms-linear-gradient(left,  $left-colour $left-colour-percentage, $right-color $right-colour-percentage);
 //   background-image: linear-gradient(to right,  $left-colour $left-colour-percentage, $right-color $right-colour-percentage);
 //   filter:           progid:DXImageTransform.Microsoft.gradient(startColorStr='#{$startColor}', endColorStr='#{$endColor}', gradientType='1');
 // }

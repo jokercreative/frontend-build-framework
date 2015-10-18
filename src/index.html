@@ -7,14 +7,13 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Stylesheet -->
-        <link rel="stylesheet" href="assets/css/styles.css" />
-        <script src="assets/js/scripts.pkg.min.js"></script>
+        include "includes/head/stylesheets.html"
+        include "includes/head/scripts.html"
     </head>
-    <body> 
+    <body>
 
-    	<!-- build:include includes/header.html -->
-    	<!-- /build -->
+    	include "includes/header.html"
+
         <nav id="menu">
           <header>
             <h2>Menu</h2>
@@ -27,8 +26,7 @@
           </header>
         </main>
 
-        <!-- build:include includes/footer.html -->
-        <!-- /build -->
+        include "includes/footer.html"
 
     </body>
 </html>

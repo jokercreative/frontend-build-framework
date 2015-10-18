@@ -1,4 +1,4 @@
-/*   
+/*
   	==========
 
   	Settings Table of Contents
@@ -6,7 +6,7 @@
   	==========
 
   	1. Font Weights
-  	2. Base Font Styles  	
+  	2. Base Font Styles
 	3. Theme Font Families
 	4. Font Sizes
 	5. Sprite
@@ -19,9 +19,9 @@
 
 /* 1. Font Weights
 ================================================== */
-$font_weight--light: 	100;
-$font_weight--regular: 	400;
-$font_weight--bold: 	600;
+$font_weight--light: 	    100;
+$font_weight--regular: 	  400;
+$font_weight--bold: 	    600;
 
 
 /* 2. Base Font Styles
@@ -55,6 +55,9 @@ $sprite_width--retina: 		2040px;
 ================================================== */
 $color_white: 				#fff;
 $color_black: 				#000;
+$color_grey: 				#a1acb5;
+$color_grey--light: 		#dce8ef;
+$color_grey--dark: 			#333;
 
 
 /* 7. Colors - Default Variables
@@ -66,6 +69,7 @@ $color_tertiary: 			#F2ECE4;
 
 /* 8. Component Based Themeing
 ================================================== */
+$spacing:					10px !default;
 
 /* --[ BORDERS ]-- */
 $border_radius:				5px;

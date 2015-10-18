@@ -10,188 +10,182 @@ module.exports = function (grunt) {
     	js: "<%= globalConfig.assets %>/js",
     	images: "<%= globalConfig.assets %>/images",
     	fonts: "<%= globalConfig.assets %>/fonts",
+    	bower: "<%= globalConfig.assets %>/vendor"
     }
 
     grunt.initConfig({
     	pkg: grunt.file.readJSON('package.json'),
-    	globalConfig: globalConfig, 
+    	globalConfig: globalConfig,
 
 
-    	/**
-		 * Shell Commands
-		 * @github.com/sindresorhus/grunt-shell
-		 */	
-    	shell: {
-		  bowerinstall: {
-		    command: function(libname){
-		      return 'bower install ' + libname + ' -S';
-		    }
-		  },
-		  bowerupdate: {
-		    command: function(libname){
-		      return 'bower update ' + libname;
-		    }
-		  }
-		},
+    /**
+     * Shell Commands
+     * @github.com/sindresorhus/grunt-shell
+     */
+    shell: {
+      bowerinstall: {
+        command: function () {
+          return 'bower install -S --allow-root';
+        }
+      },
+      bowerupdate: {
+        command: function () {
+          return 'bower update';
+        }
+      }
+    },
 
 
-    	/**
-	     * Set banner
-	     */
-	    banner: '/**\n' +
-	    '<%= pkg.title %> - <%= pkg.version %>\n' +
-	    '<%= pkg.homepage %>\n' +
-	    'Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
-	    'License: <%= pkg.license %>\n' +
-	    '*/\n',
+    /**
+     * Delete and Clean Folder
+     * @github.com/gruntjs/grunt-contrib-clean
+     */
+    clean: {
+      dist: ["<%= globalConfig.dist %>"],
+      bower: ["<%= globalConfig.src %>/<%= globalConfig.bower %>"]
+    },
+
+    /**
+     * Includes
+     * @github.com/vanetix/grunt-includes
+     */
+    includes: {
+      build: {
+        files: [{
+          expand: true,
+          cwd: '<%= globalConfig.src %>/',
+          src: [
+            '**/*.html',
+            '!assets/**/*.html',
+            '!includes/**/*.html'
+          ],
+          dest: '<%= globalConfig.dist %>/',
+          ext: '.html'
+        }]
+      }
+    },
 
 
-    	/**
-		 * Process HTML
-		 * @github.com/dciccale/grunt-processhtml
-		 */		
-		processhtml: {
-			build: {
-				options: {
-		        	process: true,
-			    },
-				files: [{
-				   expand: true,
-				   cwd: '<%= globalConfig.src %>/',
-				   src: ['*.html'],
-				   dest: '<%= globalConfig.dist %>/',
-				   ext: '.html'
-				}]
-			}
-	    },
-
-
-	    /**
-		 * HTML Minify
-		 * @github.com/gruntjs/grunt-contrib-htmlmin
-		 */		
-		htmlmin: {
-		   dist: {
-		      options: {
-		         removeComments: true,
-		         collapseWhitespace: true,
-		         minifyJS: true,
-		         minifyCSS: true
-		      },
-		      files: [{
-		         expand: true,
-		         cwd: '<%= globalConfig.src %>',
-		         src: '**/*.html',
-		         dest: '<%= globalConfig.dist %>'
-		      }]
-		   }
-		},
-
-
-	    /**
+	  /**
 		 * Sass compiling
 		 * @github.com/gruntjs/grunt-contrib-sass
-		 */		
-		sass: {
-		    compile: {
-		    	options: {
-		    		style: "compressed",
-		    		//trace: true,
-		    		//debugInfo: true
-		    	},
-		        files: {
-		            "<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css" : "<%= globalConfig.src %>/<%= globalConfig.scss %>/styles.scss"
-		        }
-		    },
-		},
-
-
-		/**
-		 * CSS Auto Prefixer
-		 * @github.com/nDmitry/grunt-autoprefixer
-		 */		
-		autoprefixer: {
-		  	options: {
-		    	browsers : ['> 5%', 'last 2 version', 'ie 8', 'ie 9']
-		  	},
-		  	dist : {
-				files : {
-					'<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css' : '<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css'
-				}
-
-			}
-		},
-
-
-		/**
-		 * CSS Strip Comments
-		 * @github.com/sindresorhus/grunt-strip-css-comments
-		 */	
-		stripCssComments: {
-	        dist: {
-	            files: {
-	                '<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css': '<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css'
-	            }
-	        }
-	    },
-
-
-	    /**
-		 * CSS Beautify
-		 * @github.com/senchalabs/cssbeautify
 		 */
-	    cssbeautifier : {
-		  	files : ['<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css'],
-            options : {
-				indent: '  ',
-			    openbrace: 'end-of-line',
-			    autosemicolon: true
-			}
+		sass: {
+	    compile: {
+	    	options: {
+	    		// style: "compressed",
+	    		//trace: true,
+	    		//debugInfo: true
+	    	},
+        files: [{
+          expand: true,
+          cwd: '<%= globalConfig.src %>/<%= globalConfig.scss %>',
+          src: '*.scss',
+          dest: '<%= globalConfig.dist %>/<%= globalConfig.css %>',
+          ext: '.css'
+        }]
+	    },
 		},
-
-
 		/**
-		 * CSS Minify
-		 * @github.com/gruntjs/grunt-contrib-cssmin
-		 */		
-		cssmin: {
-		  css: {
-		    options: {
-		      keepSpecialComments: 0
-		    },
-		    files:{
-		      '<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.min.css':'<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css'
-		    }
-		  },
-		},
+     * Post Processer for CSS
+     * @github.com/ndmitry/grunt-postcss
+     */
+    postcss: {
+      options: {
+        map: false,
+        processors: [
+          require('pixrem')(), // add fallbacks for rem units
+          require('autoprefixer')({ browsers: [, 'IE 8', 'IE 9', 'last 2 versions'] }), // add vendor prefixes
+          require('postcss-opacity')() // add opacity filter for IE8
+        ]
+      },
+      dist: {
+        src: '<%= globalConfig.dist %>/<%= globalConfig.css %>/*.css'
+      }
+    },
 
-		/**
-		 * Concatenate Bower Files
-		 * @github.com/sapegin/grunt-bower-concat
-		 */	
-		bower_concat: {
-		  all: {
-		    dest: '<%= globalConfig.src %>/<%= globalConfig.js %>/bower.js',
-		    exclude: [
-		    	'decouple'
-		    ]
-		  }
-		},
+    /**
+     * CSS Strip Comments
+     * @github.com/sindresorhus/grunt-strip-css-comments
+     */
+    stripCssComments: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= globalConfig.dist %>/<%= globalConfig.css %>',
+          src: ['**/*.css'],
+          dest: '<%= globalConfig.dist %>/<%= globalConfig.css %>',
+          ext: '.css'
+        }]
+      }
+    },
+
+    /**
+     * CSS Beautify
+     * @github.com/senchalabs/cssbeautify
+     */
+    cssbeautifier: {
+      files: ['<%= globalConfig.dist %>/<%= globalConfig.css %>/*.css'],
+      options: {
+        indent: '  ',
+        openbrace: 'end-of-line',
+        autosemicolon: true
+      }
+    },
+
+    /**
+     * Bower Copy
+     * @github.com/timmywil/grunt-bowercopy
+     */
+    bowercopy: {
+      global: {
+        options: {
+            destPrefix: '<%= globalConfig.dist %>/<%= globalConfig.js %>/vendor'
+        },
+        files: {
+          'jquery.js': 'jquery/dist/jquery.js',
+          'fontfaceobserver.js': 'fontfaceobserver/fontfaceobserver.js',
+        }
+      },
+      polyfill: {
+        options: {
+          destPrefix: '<%= globalConfig.dist %>/<%= globalConfig.js %>/vendor/polyfill'
+        },
+        files: {
+          'html5shiv-printshiv.js': 'html5shiv/dist/html5shiv-printshiv.js',
+          'html5shiv.js': 'html5shiv/dist/html5shiv.js',
+          'respond.js': 'respond/dest/respond.src.js'
+        }
+      },
+      css: {
+        options: {
+          destPrefix: '<%= globalConfig.dist %>/<%= globalConfig.css %>'
+        },
+        files: {
+          'normalize.css': 'normalize.css/normalize.css'
+        }
+      }
+    },
+
 
 
 		/**
 		 * Concatenate
 		 * @github.com/gruntjs/grunt-contrib-concat
-		 */		
+		 */
 		concat: {
-		    js: {
+      js: {
+            src: [
+              '<%= globalConfig.src %>/<%= globalConfig.js %>/*/*.js',
+              '!<%= globalConfig.dist %>/<%= globalConfig.js %>/vendor/*.js',
+            ],
+            dest: '<%= globalConfig.dist %>/<%= globalConfig.js %>/script.pkg.min.js'
+        },
+		    plugins: {
 		        src: [
-		            //'<%= globalConfig.src %>/<%= globalConfig.js %>/vendor/jquery-1.11.1.js',
-		            '<%= globalConfig.src %>/<%= globalConfig.js %>/bower.js',
-		            '<%= globalConfig.src %>/<%= globalConfig.js %>/vendor/*.js',
-		            '<%= globalConfig.src %>/<%= globalConfig.js %>/main.js'
+		          '<%= globalConfig.dist %>/<%= globalConfig.js %>/vendor/jquery.js',
 		        ],
-		        dest: '<%= globalConfig.dist %>/<%= globalConfig.js %>/scripts.pkg.min.js'
+		        dest: '<%= globalConfig.dist %>/<%= globalConfig.js %>/plugins.pkg.min.js'
 		    }
 		},
 
@@ -199,10 +193,10 @@ module.exports = function (grunt) {
 		/**
 		 * Uglify
 		 * @github.com/gruntjs/grunt-contrib-uglify
-		 */		
+		 */
 		uglify: {
 			options: {
-				banner: '<%= banner %>'
+				// banner: '<%= banner %>'
 			},
 
 			// Minify js files in js/src/
@@ -212,179 +206,211 @@ module.exports = function (grunt) {
 			},
 		},
 
+		/**
+     * JS Hint
+     * @github.com/gruntjs/grunt-contrib-jshint
+     */
+    jshint: {
+      js: {
+        files: {
+          src: [
+            '<%= globalConfig.src %>/<%= globalConfig.js %>/*/*.js',
+            '!<%= globalConfig.src %>/<%= globalConfig.js %>/polyfill/*.js',
+            '!<%= globalConfig.src %>/<%= globalConfig.js %>/vendor/*.js',
+          ],
+        },
+      },
+      options: {
+        curly: true,
+        eqeqeq: true,
+        eqnull: true,
+        browser: true,
+        globals: {
+          jQuery: true
+        },
+      },
+    },
 
 		/**
-		 * Image Minify
-		 * @github.com/gruntjs/grunt-contrib-imagemin
-		 */		
-		imagemin: {
-			dist: {
-				options: {
-			  		optimizationLevel: 7
-				},
-				files: [{
-				   expand: true,
-				   cwd: '<%= globalConfig.src %>/<%= globalConfig.images %>',
-				   src: ['**/*.{png,jpg,gif}'],
-				   dest: '<%= globalConfig.dist %>/<%= globalConfig.images %>='
-				}]
-			}
+     * Copy Files or Directories
+     * @github.com/gruntjs/grunt-contrib-copy
+     */
+    copy: {
+      fonts: {
+        files: [{
+          cwd: '<%= globalConfig.src %>/<%= globalConfig.fonts %>',
+          src: '**/*',
+          dest: '<%= globalConfig.dist %>/<%= globalConfig.fonts %>',
+          expand: true
+        }]
+      },
+      images: {
+        files: [{
+          cwd: '<%= globalConfig.src %>/<%= globalConfig.images %>',
+          src: '**/*',
+          dest: '<%= globalConfig.dist %>/<%= globalConfig.images %>',
+          expand: true
+        }]
+      },
 		},
 
-
-		/**
-		 * Copy Files or Directories
-		 * @github.com/gruntjs/grunt-contrib-copy
-		 */		
-		copy: {
-			fonts: {
-				files: [{
-					expand: true, 
-					flatten: true,
-					src: '<%= globalConfig.src %>/<%= globalConfig.fonts %>/*', 
-					dest: '<%= globalConfig.dist %>/<%= globalConfig.fonts %>/'
-					},
-				],
-			},
-			images: {
-				files: [{
-					expand: true, 
-					flatten: true,
-					src: '<%= globalConfig.src %>/<%= globalConfig.images %>/*', 
-					dest: '<%= globalConfig.dist %>/<%= globalConfig.images %>/'
-					},
-				],
-			},
-		},
-
-
-		/**
-		 * Delete and Clean Folder
-		 * @github.com/gruntjs/grunt-contrib-clean
-		 */		
-		clean: ["<%= globalConfig.dist %>"],
 
 
 		/**
 		 * Watch
 		 * @github.com/gruntjs/grunt-contrib-watch
-		 */		
+		 */
 		watch: {
-			html: {
-				files: ["<%= globalConfig.src %>/*.html","<%= globalConfig.src %>/includes/*.html"],
-				tasks: ['processhtml'],
-				options: {
-					spawn: false,
-				}
-			},
-			// Compile Sass dev on change
-			css: {
-				files: ["<%= globalConfig.src %>/<%= globalConfig.scss %>/*.scss", "<%= globalConfig.src %>/<%= globalConfig.scss %>/**/*.scss"],
-				tasks: ['sass:compile', 'autoprefixer', 'stripCssComments', 'cssbeautifier'],
-				options: {
-					spawn: false,
-				}
-			},
+			//Compile HTML
+      html: {
+        files: ['<%= globalConfig.src %>/**/*.html'],
+        tasks: ['includes'],
+        options: {
+          spawn: false,
+        }
+      },
 
-			//
-			js: {
-				files: '<%= globalConfig.src %>/<%= globalConfig.js %>/main.js',
-				tasks: ['concat:js'],
-				options: {
-					spawn: false,
-				}
-			},
+      //Compile SASS
+      css: {
+        files: ["<%= globalConfig.src %>/<%= globalConfig.scss %>/**/*.scss"],
+        tasks: ['sass', 'postcss', 'stripCssComments', 'cssbeautifier'],
+        options: {
+          spawn: false,
+        }
+      },
+
+      //Compile JS
+      js: {
+        files: '<%= globalConfig.src %>/<%= globalConfig.js %>/**/*.js',
+        tasks: ['jshint', 'concat'],
+        options: {
+          spawn: false,
+        }
+      },
+
+      //Move Images
+      images: {
+        files: [
+          "<%= globalConfig.src %>/<%= globalConfig.assets %>/images/**/*.*"
+        ],
+        tasks: ["copy:images"],
+        options: {
+          nospawn: true
+        }
+      }
 		},
 
 
 		/**
-		* browser_sync
-		* @github.com/browser_sync/grunt-browser-sync
-		*/		
-		browserSync : {
-			bsFiles : {
-				src : [
-				'<%= globalConfig.dist %>/<%= globalConfig.css %>/styles.css', 
-				'<%= globalConfig.src %>/<%= globalConfig.js %>/main.js', 
-				'<%= globalConfig.dist %>/*.html'
-				]
-			},
-			options : {
-				watchTask : true,
-				server: {
-			      baseDir: '<%= globalConfig.dist %>'
-			    }				
-			}
+     * browser_sync
+     * @github.com/browser_sync/grunt-browser-sync
+     */
+    browserSync: {
+      bsFiles: {
+        src: [
+        '<%= globalConfig.dist %>/<%= globalConfig.css %>/*.css',
+        '<%= globalConfig.dist %>/<%= globalConfig.js %>/*.js',
+        '<%= globalConfig.dist %>/**/*.html'
+        ]
+      },
+      options: {
+        watchTask: true,
+        server: {
+          baseDir: '<%= globalConfig.dist %>'
+        }
+      }
+    },
+
+
+		/**
+		* grunt-string-replace
+		* @github.com/erickrdch/grunt-string-replace
+		*/
+		'string-replace': {
+			dist: {
+			    files: [{ expand: true, cwd: 'dist/assets/css', src: '**/*', dest: 'dist/assets/css' }],
+			    options: {
+			      replacements: [{
+			        pattern: /..\/images\//gi,
+			        replacement: 'mysource_files/'
+			      }]
+			    }
+		  	}
 		}
     });
 
-	/*grunt.loadNpmTasks('grunt-processhtml');
-	grunt.loadNpmTasks('grunt-contrib-htmlmin');
-	grunt.loadNpmTasks('grunt-contrib-sass');
-	grunt.loadNpmTasks('grunt-autoprefixer');
-	grunt.loadNpmTasks('grunt-strip-css-comments');
-	grunt.loadNpmTasks('grunt-cssbeautifier');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-imagemin');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-browser-sync');*/
 	require('load-grunt-tasks')(grunt);
 
-
 	/**
-	* Default Task
-	* run `grunt`
-	*/
-	grunt.registerTask('default', [
-		'clean',
-		'sass:compile', 
-		'autoprefixer',
-		'cssbeautifier',
-		'bower_concat',
-		'concat:js',
-		'processhtml',
-		'copy',
-		'browserSync',
-		'watch'
-	]);
+   * Default Task
+   * run `grunt`
+   */
+  grunt.registerTask('default', [
+    'clean',
+    'shell:bowerinstall',
+    'bowercopy',
+    'sass',
+    'postcss',
+    'stripCssComments',
+    'cssbeautifier',
+    'includes',
+    'copy',
+    'concat',
+    'browserSync',
+    'watch'
+  ]);
 
-	grunt.registerTask('buildbower', [
-	  'bower_concat'
-	]);
+  /**
+   * Production Task
+   * run `grunt`
+   */
+  grunt.registerTask('prod', [
+    'clean',
+    'shell:bowerinstall',
+    'bowercopy',
+    'sass',
+    'postcss',
+    'stripCssComments',
+    'cssbeautifier',
+    'includes',
+    'copy',
+    'concat'
+  ]);
 
-	/**
-	* grunt bowerinstall:jquery
-	* grunt bowerupdate:jquery
-	*/
-	grunt.registerTask('bowerinstall', function(library) {
-	  grunt.task.run('shell:bowerinstall:' + library);
-	  grunt.task.run('buildbower');
-	});
-	 
-	grunt.registerTask('bowerupdate', function(library) {
-	  grunt.task.run('shell:bowerupdate:' + library);
-	  grunt.task.run('buildbower');
-	});
+  /**
+   * Squiz Matrix Build Task
+   * run `grunt matrix`
+   */
+  grunt.registerTask('matrix', [
+    'clean',
+    'shell:bowerinstall',
+    'sass',
+    'postcss',
+    'copy',
+    'bowercopy',
+    'concat',
+    'string-replace',
+    'stripCssComments',
+    'cssbeautifier',
+    'includes',
+    'uglify'
+  ]);
 
-
-	/**
-	* Production Task
-	* run `grunt production`
-	*/
-	grunt.registerTask('production', [
-		'clean',
-		'processhtml',	
-		'sass:compile',
-		'autoprefixer',
-		'cssmin',
-		'bower_concat',
-		'concat:js',
-		'uglify',	
-		// 'imagemin',
-		'copy'
-	]);
+  /**
+   * Squiz Matrix Build Task
+   * run `grunt matrix`
+   */
+  grunt.registerTask('matrix-raw', [
+    'clean',
+    'shell:bowerinstall',
+    'sass',
+    'postcss',
+    'copy',
+    'bowercopy',
+    'concat',
+    'string-replace',
+    'stripCssComments',
+    'cssbeautifier',
+    'includes'
+  ]);
 };

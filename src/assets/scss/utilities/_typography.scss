@@ -1,0 +1,31 @@
+/* Font Colors
+================================================== */
+.text-primary,
+%text-primary {
+  color: $color_primary;
+}
+
+.text-secondary,
+%text-secondary {
+  color: $color_secondary;
+}
+
+.text-tertiary,
+%text-tertiary {
+  color: $color_tertiary;
+}
+
+.text-grey,
+%text-grey {
+  color: $color_grey;
+}
+
+.text-grey-light,
+%text-grey-light {
+  color: $color_grey--light;
+}
+
+.text-white,
+%text-white {
+  color: $color_white;
+}

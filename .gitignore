@@ -1,5 +1,60 @@
+############
+## PhpStorm
+############
+.idea/*
+
+############
+## Sublime
+############
+*.sublime-project
+*.sublime-workspace
+
+
+############
+## Windows
+############
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+
+############
+## Mac
+############
 .DS_Store
-node_modules/*
+
+
+#############
+## Dependencies
+#############
+node_modules
+bower_components
+
+
+#############
+## Distribution
+#############
+dist
+
+#############
+## CSS Files
+#############
+src/assets/less/**/*.css
+
+#############
+## CSS Preprocessor
+#############
 .sass-cache
-dist/*
-bower_components/*
+*.css.map
+
+#############
+## Vendors
+#############
+src/assets/js/vendor
+
+
+
+

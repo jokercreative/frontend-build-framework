@@ -1,0 +1,64 @@
+/*
+  ==========
+
+  Background Table of Contents
+
+  ==========
+
+  Background colours
+  Background cover
+  Box Shadow
+
+*/
+
+
+/* Background Colours
+================================================== */
+.bg-primary,
+%bg-primary {
+  background-color: $color_primary;
+}
+
+.bg-secondary,
+%bg-secondary {
+  background-color: $color_secondary;
+}
+
+.bg-tertiary,
+%bg-tertiary {
+  background-color: $color_tertiary;
+}
+
+.bg-grey,
+%bg-grey {
+  background-color: $color_grey;
+}
+
+.bg-grey-light,
+%bg-grey-light {
+  background-color: $color_grey--light;
+}
+
+.bg-grey-dark,
+%bg-grey-dark {
+  background-color: $color_grey--dark;
+}
+
+.bg-white,
+%bg-white {
+  background-color: $color_white;
+}
+
+
+/* Background Cover
+================================================== */
+.background-cover,
+%background-cover { background-size: cover }
+
+
+/* Box Shadow
+================================================== */
+.remove-box-shadow,
+%remove-box-shadow {
+  box-shadow: none
+}
