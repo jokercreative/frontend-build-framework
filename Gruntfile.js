@@ -94,7 +94,7 @@ module.exports = function (grunt) {
       options: {
         map: false,
         processors: [
-          require('pixrem')(), // add fallbacks for rem units
+          require('pixrem')({rootValue: 10}), // add fallbacks for rem units
           require('autoprefixer')({ browsers: [, 'IE 8', 'IE 9', 'last 2 versions'] }), // add vendor prefixes
           require('postcss-opacity')() // add opacity filter for IE8
         ]
